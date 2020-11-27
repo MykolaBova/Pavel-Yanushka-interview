@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 public class PlacesService {
     // todo change to use app props
-    private static final String API = "AIzaSyBG70wesADepweBeIwTpkGaSdY4putdxQs";
+    private static final String API = "";
 
 //    public Place getSuggestForPlaces(String query) throws IOException, ApiRequestException {
 //        GeoApiContext geoApiContext = new GeoApiContext.Builder()
