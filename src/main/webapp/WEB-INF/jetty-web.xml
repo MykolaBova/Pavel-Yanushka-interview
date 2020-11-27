@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configure class="org.mortbay.jetty.webapp.WebAppContext">
+	<Set name="systemClasses">
+		<Array type="java.lang.String">
+
+			<!--
+				we copied these paths from jetty WebAppContext source code ...
+			-->
+			<Item>java.</Item>
+			<Item>javax.servlet.</Item>
+			<Item>javax.xml.</Item>
+			<Item>org.mortbay.</Item>
+			<Item>org.xml.</Item>
+			<Item>org.w3c.</Item>
+			<Item>org.apache.commons.logging.</Item>
+			<Item>org.apache.log4j.</Item>
+
+			<!-- and ... added slf4j -->
+			<Item>org.slf4j.</Item>
+			<Item>org.aspectj.</Item>
+
+		</Array>
+	</Set>
+</Configure>

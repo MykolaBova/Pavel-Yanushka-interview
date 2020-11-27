@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='gwtwebapp'>
+    <inherits name='com.google.gwt.user.User'/>
+
+    <inherits name='com.google.gwt.i18n.I18N'/>
+
+    <inherits name="com.google.gwt.logging.Logging"/>
+    <set-property name="gwt.logging.consoleHandler" value="DISABLED"/>
+    <set-property name="gwt.logging.developmentModeHandler" value="ENABLED"/>
+
+    <inherits name="com.google.gwt.resources.Resources"/>
+
+    <inherits name="com.github.nmorel.gwtjackson.GwtJackson"/>
+
+    <inherits name="com.google.gwt.inject.Inject"/>
+
+    <extend-property name="locale" values="en"/>
+
+    <set-property-fallback name="locale" value="en"/>
+
+    <inherits name='com.google.gwt.user.theme.clean.Clean'/>
+
+    <entry-point class='org.pavel.yanushka.client.GwtWebApp'/>
+
+    <source path='client'/>
+    <source path='common'/>
+
+</module>

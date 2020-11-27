@@ -1,0 +1,31 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:c="urn:import:org.pavel.yanushka.client.ui.component">
+    <ui:with type="org.pavel.yanushka.client.resource.Messages" field="messages"/>
+    <ui:with type="org.pavel.yanushka.client.resource.ApplicationResources" field="res"/>
+
+
+    <g:DockLayoutPanel>
+        <g:north size="250">
+            <g:HTMLPanel>
+                <h1>
+                    <g:InlineLabel text="{messages.helloMessage}"/>
+                </h1>
+                <g:FlowPanel styleName="{res.style.placesPanel}">
+                    <g:ListBox ui:field="cityBox"/>
+                    <c:ImageButton resource="{res.addIcon}" styleName="{res.style.sendButton}"
+                                   text="{messages.getButton}" ui:field="getPlacesButton"/>
+                </g:FlowPanel>
+            </g:HTMLPanel>
+        </g:north>
+
+        <g:center>
+            <g:ScrollPanel>
+                <g:FlowPanel ui:field="citiesPanel">
+                </g:FlowPanel>
+            </g:ScrollPanel>
+        </g:center>
+
+    </g:DockLayoutPanel>
+</ui:UiBinder> 
