@@ -25,6 +25,7 @@
 
         <gwtVersion>2.8.2</gwtVersion>
         <googleGin>2.1.2</googleGin>
+        <persistenceApiVersion>2.2</persistenceApiVersion>
         <outputFolder>${project.build.directory}/${project.artifactId}</outputFolder>
     </properties>
 
@@ -54,6 +55,16 @@
             <artifactId>spring-boot-starter-jetty</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.2.11.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <version>${persistenceApiVersion}</version>
+        </dependency>
+        <dependency>
             <groupId>com.github.nmorel.gwtjackson</groupId>
             <artifactId>gwt-jackson</artifactId>
             <version>0.15.4</version>
@@ -63,11 +74,6 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.hibernate</groupId>-->
-<!--            <artifactId>hibernate-entitymanager</artifactId>-->
-<!--            <version>5.0.1.Final</version>-->
-<!--        </dependency>-->
 
         <dependency>
             <groupId>com.google.gwt</groupId>
