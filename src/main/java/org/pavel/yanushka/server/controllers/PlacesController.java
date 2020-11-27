@@ -28,6 +28,6 @@ public class PlacesController {
     @GetMapping(value = "/places/get/{name}")
     @ResponseStatus(HttpStatus.OK)
     public Place getPlaces(@PathVariable String name) {
-        return placesService.getForPlaces(name);
+        return placesService.getPlacesForCity(name);
     }
 }
