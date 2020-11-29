@@ -5,7 +5,6 @@ import com.google.maps.ImageResult;
 import com.google.maps.NearbySearchRequest;
 import com.google.maps.PlacesApi;
 import com.google.maps.model.LatLng;
-import com.google.maps.model.PlaceType;
 import com.google.maps.model.PlacesSearchResponse;
 import org.pavel.yanushka.common.model.Photos;
 import org.pavel.yanushka.common.model.Place;
@@ -34,7 +33,7 @@ public class PlacesService {
     }
 
     public Place getPlacesForCity(String query) {
-        PlacesEntity city = placesRepository.getPlaceByName(query);
+        PlacesEntity city = placesRepository.findByName(query);
         NearbySearchRequest nearbySearchRequest = PlacesApi.nearbySearchQuery(getGeoApi(),
                 new LatLng(city.getLat(), city.getLng()))
                 .language("en")

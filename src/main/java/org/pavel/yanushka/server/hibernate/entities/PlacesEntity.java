@@ -1,10 +1,11 @@
 package org.pavel.yanushka.server.hibernate.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "places")
-public class PlacesEntity {
+public class PlacesEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
