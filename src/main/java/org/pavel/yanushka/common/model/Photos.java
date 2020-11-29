@@ -6,11 +6,12 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Photos implements Serializable {
-    int height;
-    int width;
+    private int height;
+    private int width;
     @JsonProperty("html_attributions")
-    List<String> htmlAttributions;
-    String photoReference;
+    private List<String> htmlAttributions;
+    private String photoReference;
+    private String photo;
 
     public int getHeight() {
         return height;
@@ -44,12 +45,20 @@ public class Photos implements Serializable {
         this.photoReference = photoReference;
     }
 
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
 
     public static final class PhotosBuilder {
-        int height;
-        int width;
-        List<String> htmlAttributions;
-        String photoReference;
+        private int height;
+        private int width;
+        private List<String> htmlAttributions;
+        private String photoReference;
+        private String photo;
 
         private PhotosBuilder() {
         }
@@ -78,12 +87,18 @@ public class Photos implements Serializable {
             return this;
         }
 
+        public PhotosBuilder photo(String photo) {
+            this.photo = photo;
+            return this;
+        }
+
         public Photos build() {
             Photos photos = new Photos();
             photos.setHeight(height);
             photos.setWidth(width);
             photos.setHtmlAttributions(htmlAttributions);
             photos.setPhotoReference(photoReference);
+            photos.setPhoto(photo);
             return photos;
         }
     }

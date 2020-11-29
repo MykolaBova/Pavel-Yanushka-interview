@@ -31,10 +31,13 @@ public class PlacesWidget extends Composite {
         this.eventBus = eventBus;
         initWidget(uiBinder.createAndBindUi(this));
         this.currentCandidate = candidate;
-        name.setText(candidate.getName());
+        name.setText("Name: " + candidate.getName()
+                + " Rating: " + candidate.getRating());
 
         HorizontalPanel imagePanel = new HorizontalPanel();
-        HTML html = new HTML(candidate.getPhotos().get(0).getHtmlAttributions().get(0));
+        HTML html = new HTML("<img src=\"data:image/png;base64, "
+                + candidate.getPhotos().get(0).getPhoto()
+                + " \" />");
         imagePanel.add(html);
 
         placeImage.add(imagePanel);
