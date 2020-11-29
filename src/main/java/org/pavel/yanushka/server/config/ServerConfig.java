@@ -3,7 +3,6 @@ package org.pavel.yanushka.server.config;
 import com.google.maps.GeoApiContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -19,7 +18,6 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @PropertySource({"classpath:application.properties"})
-@ComponentScan({"org.pavel.yanushka"})
 public class ServerConfig {
 
     private final Environment env;
