@@ -8,9 +8,9 @@ import com.google.maps.model.LatLng;
 import com.google.maps.model.PlacesSearchResponse;
 import org.pavel.yanushka.common.model.Photos;
 import org.pavel.yanushka.common.model.Place;
+import org.pavel.yanushka.server.mapper.PlaceMapper;
 import org.pavel.yanushka.server.persistence.entities.PlacesEntity;
 import org.pavel.yanushka.server.persistence.repository.PlacesRepository;
-import org.pavel.yanushka.server.mapper.PlaceMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -25,6 +25,7 @@ public class PlacesService {
     private String apiKey;
     private static final String LANGUAGE = "en";
     private static final int RADIUS = 5000;
+    private static final int IMAGE_MAX_HEIGHT_PX = 250;
 
     private final PlacesRepository placesRepository;
     private final GeoApiContext geoApiContext;
@@ -51,7 +52,7 @@ public class PlacesService {
             if (!candidate.getPhotos().isEmpty()) {
                 Photos photo = candidate.getPhotos().get(0);
                 ImageResult imageResult = PlacesApi.photo(geoApiContext,
-                        photo.getPhotoReference()).maxHeight(250).awaitIgnoreError();
+                        photo.getPhotoReference()).maxHeight(IMAGE_MAX_HEIGHT_PX).awaitIgnoreError();
                 String encoded = Base64.getEncoder().encodeToString(imageResult.imageData);
                 photo.setPhoto(encoded);
             }
