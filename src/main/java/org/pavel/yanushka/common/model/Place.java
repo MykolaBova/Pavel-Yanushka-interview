@@ -5,7 +5,6 @@ import java.util.List;
 
 public class Place implements Serializable {
     private List<Candidate> candidates;
-    private String status;
 
     public List<Candidate> getCandidates() {
         return candidates;
@@ -15,18 +14,8 @@ public class Place implements Serializable {
         this.candidates = candidates;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-
     public static final class PlaceBuilder {
         private List<Candidate> candidates;
-        private String status;
 
         private PlaceBuilder() {
         }
@@ -40,15 +29,9 @@ public class Place implements Serializable {
             return this;
         }
 
-        public PlaceBuilder status(String status) {
-            this.status = status;
-            return this;
-        }
-
         public Place build() {
             Place place = new Place();
             place.setCandidates(candidates);
-            place.setStatus(status);
             return place;
         }
     }

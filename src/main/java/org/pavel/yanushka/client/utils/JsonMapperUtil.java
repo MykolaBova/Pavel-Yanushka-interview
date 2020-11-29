@@ -10,8 +10,8 @@ public class JsonMapperUtil {
     public interface PlaceMapper extends ObjectMapper<Place> {
     }
 
-    private static final PlaceMapper placeMapper = GWT.create(PlaceMapper.class);
-    private static final JsonDeserializationContext context = JsonDeserializationContext.builder()
+    private static final PlaceMapper PLACE_MAPPER = GWT.create(PlaceMapper.class);
+    private static final JsonDeserializationContext CONTEXT = JsonDeserializationContext.builder()
             .failOnUnknownProperties(false)
             .build();
 
@@ -22,7 +22,7 @@ public class JsonMapperUtil {
     public static Place getPlaceModel(String response) {
         Place place = null;
         try {
-            place = placeMapper.read(response, context);
+            place = PLACE_MAPPER.read(response, CONTEXT);
         } catch (JsonDeserializationException e) {
             GWT.log(e.getMessage());
         }

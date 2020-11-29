@@ -8,8 +8,8 @@ import com.google.maps.model.LatLng;
 import com.google.maps.model.PlacesSearchResponse;
 import org.pavel.yanushka.common.model.Photos;
 import org.pavel.yanushka.common.model.Place;
-import org.pavel.yanushka.server.hibernate.entities.PlacesEntity;
-import org.pavel.yanushka.server.hibernate.repository.PlacesRepository;
+import org.pavel.yanushka.server.persistence.entities.PlacesEntity;
+import org.pavel.yanushka.server.persistence.repository.PlacesRepository;
 import org.pavel.yanushka.server.mapper.PlaceMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -23,21 +23,23 @@ public class PlacesService {
 
     @Value("${application.google.api}")
     private String apiKey;
+    private static final String LANGUAGE = "en";
+    private static final int RADIUS = 5000;
 
     private final PlacesRepository placesRepository;
+    private final GeoApiContext geoApiContext;
 
-    private GeoApiContext geoApiContext;
-
-    public PlacesService(PlacesRepository placesRepository) {
+    public PlacesService(PlacesRepository placesRepository, GeoApiContext geoApiContext) {
         this.placesRepository = placesRepository;
+        this.geoApiContext = geoApiContext;
     }
 
     public Place getPlacesForCity(String query) {
         PlacesEntity city = placesRepository.findByName(query);
-        NearbySearchRequest nearbySearchRequest = PlacesApi.nearbySearchQuery(getGeoApi(),
+        NearbySearchRequest nearbySearchRequest = PlacesApi.nearbySearchQuery(geoApiContext,
                 new LatLng(city.getLat(), city.getLng()))
-                .language("en")
-                .radius(2000);
+                .language(LANGUAGE)
+                .radius(RADIUS);
         PlacesSearchResponse placesSearchResponse = nearbySearchRequest.awaitIgnoreError();
         Place place = PlaceMapper.candidatesToPlace(placesSearchResponse);
         downloadImages(place);
@@ -54,14 +56,5 @@ public class PlacesService {
                 photo.setPhoto(encoded);
             }
         });
-    }
-
-    private GeoApiContext getGeoApi() {
-        if (geoApiContext == null) {
-            geoApiContext = new GeoApiContext.Builder()
-                    .apiKey(apiKey)
-                    .build();
-        }
-        return geoApiContext;
     }
 }

@@ -1,4 +1,4 @@
-package org.pavel.yanushka.server.hibernate.entities;
+package org.pavel.yanushka.server.persistence.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;

@@ -1,6 +1,6 @@
-package org.pavel.yanushka.server.hibernate.repository;
+package org.pavel.yanushka.server.persistence.repository;
 
-import org.pavel.yanushka.server.hibernate.entities.PlacesEntity;
+import org.pavel.yanushka.server.persistence.entities.PlacesEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
