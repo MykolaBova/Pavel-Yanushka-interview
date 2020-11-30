@@ -29,7 +29,7 @@ public class CitySuggestOracle extends SuggestOracle {
             requestBuilderService.makeGetSuggestsRequest(request.getQuery(), response -> {
                 CitySuggests citySuggests = JsonMapperUtil.getSuggestsModel(response.getText());
                 if (citySuggests == null || citySuggests.getSuggestsList().isEmpty()) {
-                    Window.alert("No results");
+                    Window.alert("City with name - " + request.getQuery() + " not found.");
                 } else {
                     latestSuggestions = citySuggests;
                     Response suggestResponse = new Response(citySuggests.getSuggestsList().stream()

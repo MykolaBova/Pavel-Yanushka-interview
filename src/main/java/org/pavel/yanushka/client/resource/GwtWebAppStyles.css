@@ -68,3 +68,9 @@
 	border: 1px solid #4D90FE;
 	outline: medium none;
 }
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}

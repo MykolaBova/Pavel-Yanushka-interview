@@ -9,9 +9,11 @@ import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
 import org.pavel.yanushka.client.event.GetPlacesEvent;
 import org.pavel.yanushka.client.model.ModelHandler;
+import org.pavel.yanushka.client.resource.ApplicationResources;
 import org.pavel.yanushka.client.rest.RequestBuilderService;
 import org.pavel.yanushka.client.ui.component.CitySuggestOracle;
 import org.pavel.yanushka.common.model.Candidate;
+import org.pavel.yanushka.common.model.City;
 import org.pavel.yanushka.common.model.CitySuggests;
 
 import java.util.HashMap;
@@ -31,16 +33,18 @@ public class MainPanel extends Composite {
     @UiField
     FlowPanel placesPanel;
 
+    private final ApplicationResources resources;
     private final SuggestBox citySuggest;
 
-    Map<Candidate, PlacesWidget> placeWidgets;
-
+    private final Map<Candidate, PlacesWidget> placeWidgets;
     private final SimpleEventBus eventBus;
     private final ModelHandler modelHandler;
 
     @Inject
-    public MainPanel(SimpleEventBus eventBus, ModelHandler modelHandler, RequestBuilderService requestBuilderService) {
+    public MainPanel(SimpleEventBus eventBus, ModelHandler modelHandler, RequestBuilderService requestBuilderService,
+                     ApplicationResources resources) {
         this.eventBus = eventBus;
+        this.resources = resources;
         initWidget(uiBinder.createAndBindUi(this));
         placeWidgets = new HashMap<>();
         this.modelHandler = modelHandler;
@@ -55,7 +59,7 @@ public class MainPanel extends Composite {
                 latestSuggestions.getSuggestsList().stream()
                         .filter(city -> selectedCityName.equals(city.getName()))
                         .findFirst()
-                        .ifPresent(city -> eventBus.fireEvent(new GetPlacesEvent(city.getPlaceId())));
+                        .ifPresent(this::fireGetPlacesEvent);
             }
         };
         citySuggest.addSelectionHandler(suggestionSelectionHandler);
@@ -79,5 +83,17 @@ public class MainPanel extends Composite {
         if (!all.isEmpty()) {
             all.forEach(this::addPlaceToPanel);
         }
+    }
+
+    private void fireGetPlacesEvent(City city) {
+        startLoading();
+        eventBus.fireEvent(new GetPlacesEvent(city.getPlaceId()));
+    }
+
+    private void startLoading() {
+        removeAllPlaces();
+        Image loadingImage = new Image(resources.loading());
+        loadingImage.setStyleName(resources.style().center());
+        citiesPanel.add(loadingImage);
     }
 }

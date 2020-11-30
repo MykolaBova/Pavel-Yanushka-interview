@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PlacesRepository extends CrudRepository<PlacesEntity, Long> {
     PlacesEntity findByName(final String name);
+
+    PlacesEntity findByPlaceId(final String placeId);
 }

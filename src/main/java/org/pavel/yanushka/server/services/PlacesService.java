@@ -1,20 +1,19 @@
 package org.pavel.yanushka.server.services;
 
 import com.google.maps.*;
-import com.google.maps.model.AutocompletePrediction;
-import com.google.maps.model.PlaceAutocompleteType;
-import com.google.maps.model.PlaceDetails;
-import com.google.maps.model.PlacesSearchResponse;
+import com.google.maps.model.*;
 import org.pavel.yanushka.common.model.CitySuggests;
 import org.pavel.yanushka.common.model.Photos;
 import org.pavel.yanushka.common.model.Place;
 import org.pavel.yanushka.server.mapper.PlaceMapper;
+import org.pavel.yanushka.server.persistence.entities.PlacesEntity;
 import org.pavel.yanushka.server.persistence.repository.PlacesRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
+import java.util.Objects;
 
 @PropertySource(ignoreResourceNotFound = true, value = "classpath:application.properties")
 @Service
@@ -37,13 +36,28 @@ public class PlacesService {
     }
 
     public Place getPlacesForCity(String placeId) {
-        PlaceDetails placeDetails = PlacesApi.placeDetails(geoApiContext, placeId).awaitIgnoreError();
-        NearbySearchRequest nearbySearchRequest = PlacesApi.nearbySearchQuery(geoApiContext, placeDetails.geometry.location)
+        PlacesEntity place = getPlace(placeId);
+        NearbySearchRequest nearbySearchRequest = PlacesApi.nearbySearchQuery(geoApiContext,
+                new LatLng(place.getLat(), place.getLng()))
                 .language(LANGUAGE)
                 .radius(RADIUS);
         PlacesSearchResponse placesSearchResponse = nearbySearchRequest.awaitIgnoreError();
-        Place place = PlaceMapper.candidatesToPlace(placesSearchResponse);
-        downloadImages(place);
+        Place result = PlaceMapper.candidatesToPlace(placesSearchResponse);
+        downloadImages(result);
+        return result;
+    }
+
+    private PlacesEntity getPlace(String placeId) {
+        PlacesEntity place = placesRepository.findByPlaceId(placeId);
+        if (Objects.isNull(place)) {
+            PlaceDetails placeDetails = PlacesApi.placeDetails(geoApiContext, placeId).awaitIgnoreError();
+            place = placesRepository.save(PlacesEntity.PlacesEntityBuilder.aPlacesEntity()
+                    .placeId(placeDetails.placeId)
+                    .name(placeDetails.name)
+                    .lat(placeDetails.geometry.location.lat)
+                    .lng(placeDetails.geometry.location.lng)
+                    .build());
+        }
         return place;
     }
 
