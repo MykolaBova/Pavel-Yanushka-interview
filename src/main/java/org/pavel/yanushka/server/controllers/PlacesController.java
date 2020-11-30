@@ -1,5 +1,6 @@
 package org.pavel.yanushka.server.controllers;
 
+import org.pavel.yanushka.common.model.CitySuggests;
 import org.pavel.yanushka.common.model.Place;
 import org.pavel.yanushka.server.services.PlacesService;
 import org.slf4j.Logger;
@@ -19,15 +20,16 @@ public class PlacesController {
         this.placesService = placesService;
     }
 
-//    @GetMapping(value = "/places/{name}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public Place places(@PathVariable String name) throws IOException, ApiRequestException {
-//        return placesService.getSuggestForPlaces(name);
-//    }
-
-    @GetMapping(value = "/places/get/{name}")
+    @GetMapping(value = "/places/{placeId}")
     @ResponseStatus(HttpStatus.OK)
-    public Place getPlaces(@PathVariable String name) {
-        return placesService.getPlacesForCity(name);
+    public Place getPlaces(@PathVariable String placeId) {
+        logger.debug("Going to process get request for places");
+        return placesService.getPlacesForCity(placeId);
+    }
+
+    @GetMapping(value = "/suggest/{query}")
+    @ResponseStatus(HttpStatus.OK)
+    public CitySuggests getSuggests(@PathVariable String query) {
+        return placesService.getCitySuggests(query);
     }
 }

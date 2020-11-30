@@ -1,15 +1,14 @@
 package org.pavel.yanushka.server.services;
 
-import com.google.maps.GeoApiContext;
-import com.google.maps.ImageResult;
-import com.google.maps.NearbySearchRequest;
-import com.google.maps.PlacesApi;
-import com.google.maps.model.LatLng;
+import com.google.maps.*;
+import com.google.maps.model.AutocompletePrediction;
+import com.google.maps.model.PlaceAutocompleteType;
+import com.google.maps.model.PlaceDetails;
 import com.google.maps.model.PlacesSearchResponse;
+import org.pavel.yanushka.common.model.CitySuggests;
 import org.pavel.yanushka.common.model.Photos;
 import org.pavel.yanushka.common.model.Place;
 import org.pavel.yanushka.server.mapper.PlaceMapper;
-import org.pavel.yanushka.server.persistence.entities.PlacesEntity;
 import org.pavel.yanushka.server.persistence.repository.PlacesRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -29,16 +28,17 @@ public class PlacesService {
 
     private final PlacesRepository placesRepository;
     private final GeoApiContext geoApiContext;
+    private final PlaceAutocompleteRequest.SessionToken sessionToken;
 
     public PlacesService(PlacesRepository placesRepository, GeoApiContext geoApiContext) {
         this.placesRepository = placesRepository;
         this.geoApiContext = geoApiContext;
+        this.sessionToken = new PlaceAutocompleteRequest.SessionToken();
     }
 
-    public Place getPlacesForCity(String query) {
-        PlacesEntity city = placesRepository.findByName(query);
-        NearbySearchRequest nearbySearchRequest = PlacesApi.nearbySearchQuery(geoApiContext,
-                new LatLng(city.getLat(), city.getLng()))
+    public Place getPlacesForCity(String placeId) {
+        PlaceDetails placeDetails = PlacesApi.placeDetails(geoApiContext, placeId).awaitIgnoreError();
+        NearbySearchRequest nearbySearchRequest = PlacesApi.nearbySearchQuery(geoApiContext, placeDetails.geometry.location)
                 .language(LANGUAGE)
                 .radius(RADIUS);
         PlacesSearchResponse placesSearchResponse = nearbySearchRequest.awaitIgnoreError();
@@ -57,5 +57,11 @@ public class PlacesService {
                 photo.setPhoto(encoded);
             }
         });
+    }
+
+    public CitySuggests getCitySuggests(String query) {
+        AutocompletePrediction[] autocompletePredictions = PlacesApi.placeAutocomplete(geoApiContext, query, sessionToken)
+                .types(PlaceAutocompleteType.CITIES).awaitIgnoreError();
+        return PlaceMapper.candidatesToCitySuggests(autocompletePredictions);
     }
 }

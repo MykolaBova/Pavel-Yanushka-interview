@@ -1,20 +1,18 @@
 package org.pavel.yanushka.client.ui;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.google.inject.Inject;
 import org.pavel.yanushka.client.event.GetPlacesEvent;
 import org.pavel.yanushka.client.model.ModelHandler;
-import org.pavel.yanushka.client.ui.component.ImageButton;
+import org.pavel.yanushka.client.rest.RequestBuilderService;
+import org.pavel.yanushka.client.ui.component.CitySuggestOracle;
 import org.pavel.yanushka.common.model.Candidate;
+import org.pavel.yanushka.common.model.CitySuggests;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,36 +26,40 @@ public class MainPanel extends Composite {
     }
 
     @UiField
-    ImageButton getPlacesButton;
-
-    @UiField
-    ListBox cityBox;
-
-    @UiField
     FlowPanel citiesPanel;
+
+    @UiField
+    FlowPanel placesPanel;
+
+    private final SuggestBox citySuggest;
 
     Map<Candidate, PlacesWidget> placeWidgets;
 
     private final SimpleEventBus eventBus;
-
     private final ModelHandler modelHandler;
 
     @Inject
-    public MainPanel(SimpleEventBus eventBus, ModelHandler modelHandler) {
+    public MainPanel(SimpleEventBus eventBus, ModelHandler modelHandler, RequestBuilderService requestBuilderService) {
         this.eventBus = eventBus;
         initWidget(uiBinder.createAndBindUi(this));
         placeWidgets = new HashMap<>();
         this.modelHandler = modelHandler;
-        // todo get this from db
-        cityBox.addItem("Grodno");
-        cityBox.addItem("Minsk");
-        cityBox.setSelectedIndex(0);
-    }
+        final CitySuggestOracle citySuggestOracle = new CitySuggestOracle(requestBuilderService);
+        citySuggest = new SuggestBox(citySuggestOracle);
 
-    @UiHandler("getPlacesButton")
-    void onGetPlacesButtonClick(ClickEvent e) {
-        String cityText = cityBox.getSelectedItemText();
-        eventBus.fireEvent(new GetPlacesEvent(cityText));
+        final SelectionHandler<SuggestOracle.Suggestion> suggestionSelectionHandler = event -> {
+            final String selectedCityName = event.getSelectedItem().getDisplayString();
+            if (selectedCityName != null && !selectedCityName.isEmpty()) {
+                final CitySuggests latestSuggestions =
+                        ((CitySuggestOracle) citySuggest.getSuggestOracle()).getLatestSuggestions();
+                latestSuggestions.getSuggestsList().stream()
+                        .filter(city -> selectedCityName.equals(city.getName()))
+                        .findFirst()
+                        .ifPresent(city -> eventBus.fireEvent(new GetPlacesEvent(city.getPlaceId())));
+            }
+        };
+        citySuggest.addSelectionHandler(suggestionSelectionHandler);
+        placesPanel.add(citySuggest);
     }
 
     public void addPlaceToPanel(Candidate candidate) {

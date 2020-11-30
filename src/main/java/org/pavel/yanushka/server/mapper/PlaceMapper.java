@@ -1,11 +1,10 @@
 package org.pavel.yanushka.server.mapper;
 
+import com.google.maps.model.AutocompletePrediction;
 import com.google.maps.model.Photo;
 import com.google.maps.model.PlacesSearchResponse;
 import com.google.maps.model.PlacesSearchResult;
-import org.pavel.yanushka.common.model.Candidate;
-import org.pavel.yanushka.common.model.Photos;
-import org.pavel.yanushka.common.model.Place;
+import org.pavel.yanushka.common.model.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +20,18 @@ public final class PlaceMapper {
     public static Place candidatesToPlace(PlacesSearchResponse placesSearchResponse) {
         return Place.PlaceBuilder.aPlace()
                 .candidates(buildCandidates(placesSearchResponse.results))
+                .build();
+    }
+
+    public static CitySuggests candidatesToCitySuggests(AutocompletePrediction[] predictions) {
+        return CitySuggests.CitySuggestsBuilder.aCitySuggests()
+                .suggestsList(
+                        Arrays.stream(predictions)
+                                .map(p -> City.Builder.aSuggest()
+                                        .name(p.structuredFormatting.mainText)
+                                        .placeId(p.placeId)
+                                        .build())
+                                .collect(Collectors.toList()))
                 .build();
     }
 

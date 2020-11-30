@@ -6,14 +6,14 @@ public class GetPlacesEvent extends GwtEvent<GetPlacesEventHandler> {
 
     public static final Type<GetPlacesEventHandler> TYPE = new Type<>();
 
-    private final String cityTitle;
+    private final String placeId;
 
-    public String getCityTitle() {
-        return cityTitle;
+    public String getPlaceId() {
+        return placeId;
     }
 
-    public GetPlacesEvent(String cityTitle) {
-        this.cityTitle = cityTitle;
+    public GetPlacesEvent(String placeId) {
+        this.placeId = placeId;
     }
 
     @Override

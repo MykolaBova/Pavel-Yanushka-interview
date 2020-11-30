@@ -25,7 +25,7 @@ public class WebAppController {
     }
 
     public void bindHandlers() {
-        eventBus.addHandler(GetPlacesEvent.TYPE, event -> getPlacesList(event.getCityTitle()));
+        eventBus.addHandler(GetPlacesEvent.TYPE, event -> getPlacesList(event.getPlaceId()));
     }
 
     protected void showPlacesList(Place list) {
@@ -33,8 +33,8 @@ public class WebAppController {
         mainPanel.showPlaces();
     }
 
-    protected void getPlacesList(String cityName) {
-        requestBuilderService.makeGetPlacesRequest(cityName, response ->
+    protected void getPlacesList(String placeId) {
+        requestBuilderService.makeGetPlacesRequest(placeId, response ->
                 showPlacesList(JsonMapperUtil.getPlaceModel(response.getText())));
     }
 }

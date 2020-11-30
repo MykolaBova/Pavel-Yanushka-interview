@@ -13,6 +13,10 @@ public class RequestBuilderService {
         getRequest(getPlacesUrl(cityName), consumer);
     }
 
+    public void makeGetSuggestsRequest(String query, Consumer<Response> consumer) {
+        getRequest(getSuggestUrl(query), consumer);
+    }
+
     private void getRequest(String url, Consumer<Response> consumer) {
         RequestBuilder rb = new RequestBuilder(RequestBuilder.GET, url);
         rb.setCallback(new RequestCallback() {
@@ -35,6 +39,10 @@ public class RequestBuilderService {
     }
 
     private String getPlacesUrl(String cityName) {
-        return GWT.getHostPageBaseURL() + REST_PREFIX + "places/get/" + cityName;
+        return GWT.getHostPageBaseURL() + REST_PREFIX + "places/" + cityName;
+    }
+
+    private String getSuggestUrl(String query) {
+        return GWT.getHostPageBaseURL() + REST_PREFIX + "suggest/" + query;
     }
 }
