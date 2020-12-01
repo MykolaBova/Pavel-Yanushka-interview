@@ -12,9 +12,9 @@ import org.pavel.yanushka.client.model.ModelHandler;
 import org.pavel.yanushka.client.resource.ApplicationResources;
 import org.pavel.yanushka.client.rest.RequestBuilderService;
 import org.pavel.yanushka.client.ui.component.CitySuggestOracle;
-import org.pavel.yanushka.common.model.Candidate;
-import org.pavel.yanushka.common.model.City;
-import org.pavel.yanushka.common.model.CitySuggests;
+import org.pavel.yanushka.common.models.Candidate;
+import org.pavel.yanushka.common.models.City;
+import org.pavel.yanushka.common.models.CitySuggests;
 
 import java.util.HashMap;
 import java.util.List;

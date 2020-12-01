@@ -5,7 +5,7 @@ import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
-import org.pavel.yanushka.common.model.Candidate;
+import org.pavel.yanushka.common.models.Candidate;
 
 public class PlacesWidget extends Composite {
 

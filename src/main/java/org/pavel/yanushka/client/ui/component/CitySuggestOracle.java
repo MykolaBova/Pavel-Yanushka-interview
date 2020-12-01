@@ -6,7 +6,7 @@ import com.google.gwt.user.client.ui.MultiWordSuggestOracle.MultiWordSuggestion;
 import com.google.gwt.user.client.ui.SuggestOracle;
 import org.pavel.yanushka.client.rest.RequestBuilderService;
 import org.pavel.yanushka.client.utils.JsonMapperUtil;
-import org.pavel.yanushka.common.model.CitySuggests;
+import org.pavel.yanushka.common.models.CitySuggests;
 
 import java.util.stream.Collectors;
 

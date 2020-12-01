@@ -1,7 +1,7 @@
 package org.pavel.yanushka.client.model;
 
-import org.pavel.yanushka.common.model.Candidate;
-import org.pavel.yanushka.common.model.Place;
+import org.pavel.yanushka.common.models.Candidate;
+import org.pavel.yanushka.common.models.Place;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +32,7 @@ public class ModelHandler {
 
     public void reloadAll(Place list) {
         places.clear();
-        for (Candidate t : list.getCandidates()) {
-            add(t);
-        }
+        places.addAll(list.getCandidates());
     }
 
 }

@@ -7,7 +7,7 @@ import org.pavel.yanushka.client.model.ModelHandler;
 import org.pavel.yanushka.client.rest.RequestBuilderService;
 import org.pavel.yanushka.client.ui.MainPanel;
 import org.pavel.yanushka.client.utils.JsonMapperUtil;
-import org.pavel.yanushka.common.model.Place;
+import org.pavel.yanushka.common.models.Place;
 
 public class WebAppController {
     private final SimpleEventBus eventBus;

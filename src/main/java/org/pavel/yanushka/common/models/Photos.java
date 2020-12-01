@@ -1,4 +1,4 @@
-package org.pavel.yanushka.common.model;
+package org.pavel.yanushka.common.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

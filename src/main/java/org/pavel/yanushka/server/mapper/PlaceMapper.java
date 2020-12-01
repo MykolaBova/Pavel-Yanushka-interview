@@ -4,7 +4,7 @@ import com.google.maps.model.AutocompletePrediction;
 import com.google.maps.model.Photo;
 import com.google.maps.model.PlacesSearchResponse;
 import com.google.maps.model.PlacesSearchResult;
-import org.pavel.yanushka.common.model.*;
+import org.pavel.yanushka.common.models.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,9 +17,9 @@ public final class PlaceMapper {
         throw new IllegalStateException("Utility class");
     }
 
-    public static Place candidatesToPlace(PlacesSearchResponse placesSearchResponse) {
+    public static Place candidatesToPlace(String placeName, PlacesSearchResponse placesSearchResponse) {
         return Place.PlaceBuilder.aPlace()
-                .candidates(buildCandidates(placesSearchResponse.results))
+                .candidates(buildCandidates(placeName, placesSearchResponse.results))
                 .build();
     }
 
@@ -35,15 +35,20 @@ public final class PlaceMapper {
                 .build();
     }
 
-    private static List<Candidate> buildCandidates(PlacesSearchResult[] results) {
-        return Arrays.stream(results)
-                .map(result -> Candidate.CandidatesBuilder.aCandidates()
-                        .name(result.name)
-                        .formattedAddress(result.formattedAddress)
-                        .placeId(result.placeId)
-                        .photos(buildPhotos(result.photos))
-                        .rating(result.rating)
-                        .build()).collect(Collectors.toList());
+    private static List<Candidate> buildCandidates(String placeName, PlacesSearchResult[] results) {
+        List<Candidate> candidates = new ArrayList<>();
+        if (results != null) {
+            candidates.addAll(Arrays.stream(results)
+                    .filter(result -> !result.name.equals(placeName))
+                    .map(result -> Candidate.CandidatesBuilder.aCandidates()
+                            .name(result.name)
+                            .formattedAddress(result.formattedAddress)
+                            .placeId(result.placeId)
+                            .photos(buildPhotos(result.photos))
+                            .rating(result.rating)
+                            .build()).collect(Collectors.toList()));
+        }
+        return candidates;
     }
 
     private static List<Photos> buildPhotos(Photo[] photos) {

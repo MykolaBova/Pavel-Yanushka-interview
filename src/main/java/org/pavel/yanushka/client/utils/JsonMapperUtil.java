@@ -4,8 +4,8 @@ import com.github.nmorel.gwtjackson.client.JsonDeserializationContext;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.github.nmorel.gwtjackson.client.exception.JsonDeserializationException;
 import com.google.gwt.core.client.GWT;
-import org.pavel.yanushka.common.model.CitySuggests;
-import org.pavel.yanushka.common.model.Place;
+import org.pavel.yanushka.common.models.CitySuggests;
+import org.pavel.yanushka.common.models.Place;
 
 import java.io.Serializable;
 
